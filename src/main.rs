@@ -1,7 +1,25 @@
+extern crate actix_web;
+extern crate ears;
 extern crate gtk;
 
+use ears::{AudioController, Sound};
 use gtk::prelude::*;
 use gtk::{Button, Window, WindowType};
+use std::thread;
+
+use actix_web::{server, App, HttpRequest};
+
+fn index(_req: &HttpRequest) -> &'static str {
+    "Hello world!"
+}
+
+fn play_sound(filename: &'static str) {
+    thread::spawn(move || {
+        let mut sound = Sound::new(filename).unwrap();
+        sound.play();
+        while sound.is_playing() {}
+    });
+}
 
 fn main() {
     if gtk::init().is_err() {
@@ -31,6 +49,18 @@ fn main() {
 
     button.connect_clicked(|_| {
         println!("Clicked!");
+        play_sound("train_horn.wav");
+    });
+
+    another_button.connect_clicked(|button| {
+        println!("{:#?}", button);
+    });
+
+    thread::spawn(move || {
+        server::new(|| App::new().resource("/", |r| r.f(index)))
+            .bind("127.0.0.1:8087")
+            .unwrap()
+            .run();
     });
 
     gtk::main();
