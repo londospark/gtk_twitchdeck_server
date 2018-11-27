@@ -54,6 +54,7 @@ fn main() {
         let button = Button::new_with_label(&sound_effect.label);
         sfx.insert(button, sound_effect.filename);
     }
+    
     for (btn, filename) in sfx {
         let ref_file = Arc::new(filename);
         btn.connect_clicked(move |_| {
@@ -75,17 +76,7 @@ fn main() {
         gtk::main_quit();
         Inhibit(false)
     });
-    /*
-    button.connect_clicked(|_| {
-        println!("Clicked!");
-        play_sound(&"train_horn.wav".to_string());
-    });
-
-    another_button.connect_clicked(|button| {
-        println!("{:#?}", button);
-    });
-*/
-    //TODO: Does rust have a better process abstraction that we can use?
+    
     thread::spawn(move || {
         webserver::start_server();
     });
