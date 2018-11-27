@@ -1,6 +1,5 @@
 #[macro_use]
 extern crate serde_derive;
-extern crate crossbeam;
 extern crate toml;
 
 extern crate ears;
