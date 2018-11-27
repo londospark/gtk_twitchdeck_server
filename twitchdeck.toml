@@ -1,0 +1,7 @@
+[[sounds]]
+filename = "train_horn.wav"
+label = "Train horn"
+
+[[sounds]]
+filename = "train_horn2.wav"
+label = "Train horn 2"
