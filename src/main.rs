@@ -15,17 +15,7 @@ use std::thread;
 use std::sync::Arc;
 
 mod webserver;
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Config {
-    sounds: Vec<SoundEffect>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct SoundEffect {
-    filename: String,
-    label: String,
-}
+mod config;
 
 fn main() {
     if gtk::init().is_err() {
@@ -34,12 +24,13 @@ fn main() {
     }
 
     let mut file = File::open("twitchdeck.toml").expect("File not found.");
-    let mut contents = String::new();
+    let mut contents: String = String::new();
     file.read_to_string(&mut contents)
         .expect("Cannot read file.");
-    let config: Config = toml::from_str(&contents).expect("Cannot parse file");
+    let config: config::Config = toml::from_str(&contents).expect("Cannot parse file");
+    let thread_safe_config : Arc<config::Config> = Arc::new(config.clone());
 
-    println!("{:?}", config);
+    // println!("{:?}", thread_safe_config);
 
     let window = Window::new(WindowType::Toplevel);
     window.set_title("First GTK+ Program");
@@ -77,7 +68,8 @@ fn main() {
     });
     
     thread::spawn(move || {
-        webserver::start_server();
+        let web_server_config = thread_safe_config.clone();
+        webserver::start_server(web_server_config);
     });
 
     gtk::main();
