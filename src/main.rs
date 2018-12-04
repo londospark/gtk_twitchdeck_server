@@ -27,7 +27,6 @@ mod support_gfx;
 const CLEAR_COLOR: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 
 fn main() {
-
     let mut file = File::open("twitchdeck.toml").expect("File not found.");
     let mut contents: String = String::new();
     file.read_to_string(&mut contents)
@@ -39,11 +38,11 @@ fn main() {
         let web_server_config = thread_safe_config.clone();
         webserver::start_server(web_server_config);
     });
-
-    support_gfx::run("Twitchdeck Server".to_owned(), &config, CLEAR_COLOR, hello_world);
+    
+    support_gfx::run("Twitchdeck Server".to_owned(), &config, CLEAR_COLOR, main_loop);
 }
 
-fn hello_world<'a>(config: &config::Config, ui: &Ui<'a>) -> bool {
+fn main_loop<'a>(config: &config::Config, ui: &Ui<'a>) -> bool {
     ui.window(im_str!("Play Sounds"))
         .size((300.0, 100.0), ImGuiCond::FirstUseEver)
         .build(|| {
