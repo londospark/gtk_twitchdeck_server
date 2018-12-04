@@ -2,9 +2,10 @@ extern crate actix_web;
 extern crate futures;
 
 use self::actix_web::{http, server, App, HttpRequest, HttpResponse, Json};
-use ears::{AudioController, Sound};
+use rodio::Source;
+use std::fs::File;
+use std::io::BufReader;
 use std::sync::Arc;
-use std::thread;
 use webserver::actix_web::Responder;
 use webserver::actix_web::State;
 
@@ -35,20 +36,18 @@ fn index(_req: &HttpRequest<Arc<Config>>) -> &'static str {
 
 fn play_sound(body: Json<SoundRequest>, config_state: State<Arc<Config>>) -> impl Responder {
     println!("{:?}", body);
-    let config_state = Arc::new(config_state.clone());
-    thread::spawn(move || {
-        let config_state = config_state.clone();
-        let sound_to_play = &config_state
-            .sounds
-            .iter()
-            .filter(|item| item.label == body.sound)
-            .next()
-            .unwrap()
-            .filename;
-        let mut sound = Sound::new(&sound_to_play).unwrap();
-        sound.play();
-        while sound.is_playing() {}
-    });
+    let config_state = config_state.clone();
+    let device = rodio::default_output_device().unwrap();
+    let sound_to_play = &config_state
+        .sounds
+        .iter()
+        .filter(|item| item.label == body.sound)
+        .next()
+        .unwrap()
+        .filename;
+    let file = File::open(sound_to_play).unwrap();
+    let source = rodio::Decoder::new(BufReader::new(file)).unwrap();
+    rodio::play_raw(&device, source.amplify(32.0).convert_samples());
     HttpResponse::Ok()
 }
 

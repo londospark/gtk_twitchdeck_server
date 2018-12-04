@@ -5,8 +5,16 @@ authors = ["Gareth Hubball <ridecar2@gmail.com>"]
 
 [dependencies]
 actix-web = "0.7"
-ears = "0.5.1"
+rodio = "0.8.1"
 toml = "0.4"
 serde_derive = "1.0" # Required for toml - but why do WE have to specify it?
 serde = "1.0" # Required for toml - but why do WE have to specify it?
 futures = "0.1.25"
+
+gfx = "0.17"
+gfx_window_glutin = "0.26"
+glium = { version = "0.22", default-features = true }
+glutin = "0.18"
+imgui = "0.0.21"
+imgui-gfx-renderer = "0.0.21"
+imgui-glutin-support = "0.0.21"
