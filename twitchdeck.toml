@@ -1,7 +1,7 @@
 [[sounds]]
-filename = "train_horn.wav"
-label = "Train horn"
+filename = "Ring.wav"
+label = "Sonic Ring"
 
-#[[sounds]]
-#filename = "train_horn2.wav"
-#label = "Train horn 2"
+[[sounds]]
+filename = "Complete.wav"
+label = "Success"

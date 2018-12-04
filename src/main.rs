@@ -44,7 +44,7 @@ fn main() {
         let button = Button::new_with_label(&sound_effect.label);
         sfx.insert(button, sound_effect.filename);
     }
-    
+
     for (btn, filename) in sfx {
         let ref_file = Arc::new(filename);
         btn.connect_clicked(move |_| {

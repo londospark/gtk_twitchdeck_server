@@ -665,6 +665,7 @@ version = "0.0.1"
 dependencies = [
  "actix-web 0.7.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "ears 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "futures 0.1.25 (registry+https://github.com/rust-lang/crates.io-index)",
  "gtk 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)",
